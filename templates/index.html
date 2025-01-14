@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zack's Password Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 min-h-screen transition-colors duration-200">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="flex justify-end mb-4">
+                <button id="darkModeToggle" class="p-3 rounded-full bg-white dark:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <i class="fas fa-moon dark:text-yellow-300 text-gray-700"></i>
+                </button>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 mb-6 transform hover:scale-[1.01] transition-all duration-300">
+                <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+                    Zack's Password Generator
+                </h1>
+
+                <div class="space-y-6">
+                    <!-- Mode Selection -->
+                    <div class="form-group">
+                        <label class="block text-black dark:text-gray-200 font-semibold mb-2 text-lg">
+                            Generation Mode
+                        </label>
+                        <select id="mode" class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                            <option value="basic">Basic Password</option>
+                            <option value="pattern">Pattern Based</option>
+                            <option value="shuffle">Shuffle Word</option>
+                            <option value="replace">Character Replacement</option>
+                        </select>
+                    </div>
+
+                    <!-- Mode-specific inputs -->
+                    <div id="basicOptions" class="space-y-4">
+                        <div class="form-group">
+                            <label class="block text-black dark:text-gray-200 font-semibold mb-2 text-lg">
+                                Complexity
+                            </label>
+                            <select id="complexity" class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="block text-black dark:text-gray-200 font-semibold mb-2 text-lg">
+                                Length
+                            </label>
+                            <input type="number" id="length" value="12" min="6" max="32" 
+                                class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div id="patternOptions" class="hidden">
+                        <label class="block text-black dark:text-gray-200 font-semibold mb-2 text-lg">
+                            Pattern
+                        </label>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg mb-3 text-sm text-gray-600 dark:text-gray-300">
+                            Use: L (lowercase), U (uppercase), N (number), S (symbol)
+                        </div>
+                        <input type="text" id="pattern" placeholder="LLNNSS" 
+                            class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                    </div>
+
+                    <div id="wordInput" class="hidden">
+                        <label class="block text-black dark:text-gray-200 font-semibold mb-2 text-lg">
+                            Input Word
+                        </label>
+                        <input type="text" id="word" placeholder="Enter a word" 
+                            class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button id="generate" class="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                        Generate Password
+                    </button>
+
+                    <!-- Output Area -->
+                    <div class="mt-8 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 shadow-inner">
+                        <div class="flex items-center justify-between mb-4">
+                            <label class="block text-black dark:text-gray-200 font-semibold text-lg">
+                                Generated Password
+                            </label>
+                            <button id="copy" class="flex items-center gap-2 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 font-medium">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="output" readonly 
+                                class="w-full p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-mono text-lg focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200">
+                            <div id="error-message" class="hidden absolute inset-0 flex items-center justify-center text-red-500 dark:text-red-400 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 rounded-lg">
+                            </div>
+                        </div>
+                        
+                        <!-- Strength Meter -->
+                        <div class="mt-4">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-black dark:text-gray-200">Password Strength</span>
+                                <span id="strengthText" class="text-sm font-medium text-black dark:text-gray-200"></span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 rounded-full dark:bg-gray-600 overflow-hidden">
+                                <div id="strengthMeter" class="h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
