@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import random
 import string
@@ -7,10 +7,12 @@ import os
 
 app = Flask(__name__, 
     static_folder='../static',
-    static_url_path='/static',
     template_folder='../templates'
 )
 CORS(app)
+
+# Configure app for production
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 def generate_basic_password(complexity='medium', length=12):
     # Ensure minimum length to accommodate 'Zack'
@@ -165,4 +167,4 @@ def generate_password():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)
